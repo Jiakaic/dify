@@ -22,7 +22,7 @@ const parseCurl = (curlCommand: string): { node: HttpNodeType | null; error: str
   const node: Partial<HttpNodeType> = {
     title: 'HTTP Request',
     desc: 'Imported from cURL',
-    method: Method.get,
+    method: undefined,
     url: '',
     headers: '',
     params: '',
@@ -52,6 +52,7 @@ const parseCurl = (curlCommand: string): { node: HttpNodeType | null; error: str
         if (i + 1 >= args.length)
           return { node: null, error: 'Missing data value after -d, --data, --data-raw, or --data-binary.' }
         node.body = { type: BodyType.rawText, data: args[++i].replace(/^['"]|['"]$/g, '') }
+        node.method = node.method || Method.post
         break
       case '-F':
       case '--form': {
